@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require 'rubygems'
 require_relative "../lib/app_perf_agent/cli"
 
 cli = AppPerfAgent::CLI.instance

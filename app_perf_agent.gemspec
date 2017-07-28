@@ -1,5 +1,6 @@
 #-*- coding: utf-8 -*-
-$:.push "#{File.expand_path("..", __FILE__)}/lib"
+lib = File.expand_path("../lib", __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |s|
   s.name          = "app_perf_agent"
@@ -10,11 +11,14 @@ Gem::Specification.new do |s|
   s.authors       = ["Randy Girard"]
   s.email         = "rgirard59@yahoo.com"
 
-  files  = `git ls-files`.split("\n") rescue []
-  files += Dir["lib/**/*.rb"]
-  s.files         = files
+  s.files         = `git ls-files -z`.split("\x0").reject do |f|
+    f.match(%r{^(test|spec|features)/})
+  end
 
+  s.bindir        = "exe"
+  s.executables   = s.files.grep(%r{^exe/}) { |f| File.basename(f) }
   s.require_paths = ["lib"]
+
   s.homepage      = "https://www.github.com/randy-girard/app_perf_agent"
   s.license       = "MIT"
 
