@@ -1,4 +1,5 @@
 require "vmstat"
+require_relative "base"
 
 module AppPerfAgent
   module Plugin
