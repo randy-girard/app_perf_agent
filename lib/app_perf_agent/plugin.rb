@@ -16,8 +16,8 @@ module AppPerfAgent
 
       def plugins
         @plugins ||= ::AppPerfAgent::Plugin::Base
-        .descendants
-        .map(&:new)
+          .descendants
+          .map(&:new)
       end
     end
   end

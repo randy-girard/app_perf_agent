@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |s|
   s.name          = "app_perf_agent"
-  s.version       = "0.0.4"
+  s.version       = "0.0.5"
   s.date          = "2017-07-24"
   s.summary       = "AppPerf Agent"
   s.description   = "Agent for the AppPerf app."

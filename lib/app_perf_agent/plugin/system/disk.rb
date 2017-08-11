@@ -9,30 +9,10 @@ module AppPerfAgent
           disks = Vmstat.snapshot.disks
           disks.flat_map {|disk|
             [
-              [
-                AppPerfAgent::Types::DISK,
-                "system.disk.used_bytes",
-                "#{disk.origin} - #{disk.type} (#{disk.mount})",
-                disk.used_bytes
-              ],
-              [
-                AppPerfAgent::Types::DISK,
-                "system.disk.free_bytes",
-                "#{disk.origin} - #{disk.type} (#{disk.mount})",
-                disk.free_bytes
-              ],
-              [
-                AppPerfAgent::Types::DISK,
-                "system.disk.available_bytes",
-                "#{disk.origin} - #{disk.type} (#{disk.mount})",
-                disk.available_bytes
-              ],
-              [
-                AppPerfAgent::Types::DISK,
-                "system.disk.total_bytes",
-                "#{disk.origin} - #{disk.type} (#{disk.mount})",
-                disk.total_bytes
-              ]
+              ["system.disk.used_bytes",       disk.used_bytes,      { "origin" => disk.origin, "type" => disk.type, "mount" => disk.mount }],
+              ["system.disk.free_bytes",       disk.free_bytes,      { "origin" => disk.origin, "type" => disk.type, "mount" => disk.mount }],
+              ["system.disk.available_bytes",  disk.available_bytes, { "origin" => disk.origin, "type" => disk.type, "mount" => disk.mount }],
+              ["system.disk.total_bytes",      disk.total_bytes,     { "origin" => disk.origin, "type" => disk.type, "mount" => disk.mount }]
             ]
           }
         end

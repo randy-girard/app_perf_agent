@@ -36,13 +36,9 @@ module AppPerfAgent
         items = plugin.call
         items.map {|i| AppPerfAgent.logger.debug i }
         Array(items).each do |item|
-          type, name, label, value = item
-          dispatcher.add_event(["metric", Time.now.to_f, {
-            "type" => type,
-            "name" => name,
-            "label" => label,
-            "value" => value
-          }])
+          key, value, tags = item
+          metric = ["metric", Time.now.to_f, key, value, tags || {}]
+          dispatcher.add_event(metric)
         end
       end
     end

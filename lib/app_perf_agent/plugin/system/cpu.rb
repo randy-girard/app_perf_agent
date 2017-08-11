@@ -5,36 +5,26 @@ module AppPerfAgent
   module Plugin
     module System
       class Cpu < AppPerfAgent::Plugin::Base
+        attr_accessor :last
+
+        def initialize
+          self.last = Vmstat.snapshot.cpus
+          super
+        end
+
         def call
           cpus = Vmstat.snapshot.cpus
-          cpus.flat_map {|cpu|
+          metrics = cpus.each_with_index.flat_map {|cpu, index|
+            total = (cpu.idle + cpu.nice + cpu.system + cpu.user) - (last[index].idle + last[index].nice + last[index].system + last[index].user)
             [
-              [
-                AppPerfAgent::Types::CPU,
-                "system.cpu.idle",
-                "CPU ##{cpu.num} (Idle)",
-                cpu.idle
-              ],
-              [
-                AppPerfAgent::Types::CPU,
-                "system.cpu.nice",
-                "CPU ##{cpu.num} (Nice)",
-                cpu.nice
-              ],
-              [
-                AppPerfAgent::Types::CPU,
-                "system.cpu.system",
-                "CPU ##{cpu.num} (System)",
-                cpu.system
-              ],
-              [
-                AppPerfAgent::Types::CPU,
-                "system.cpu.user",
-                "CPU ##{cpu.num} (User)",
-                cpu.user
-              ]
+              ["system.cpu.idle",   (cpu.idle - last[index].idle).to_f / total.to_f * 100.to_f,   { "num" => cpu.num }],
+              ["system.cpu.nice",   (cpu.nice - last[index].nice).to_f / total.to_f * 100.to_f,   { "num" => cpu.num }],
+              ["system.cpu.system", (cpu.system - last[index].system).to_f / total.to_f * 100.to_f, { "num" => cpu.num }],
+              ["system.cpu.user",   (cpu.user - last[index].user).to_f / total.to_f * 100.to_f,   { "num" => cpu.num }]
             ]
           }
+          self.last = cpus
+          metrics
         end
       end
     end

@@ -1,4 +1,3 @@
-require_relative  "app_perf_agent/types"
 require_relative  "app_perf_agent/logger"
 require_relative  "app_perf_agent/plugin"
 require_relative  "app_perf_agent/dispatcher"

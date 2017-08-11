@@ -8,36 +8,11 @@ module AppPerfAgent
         def call
           memory = Vmstat.memory
           [
-            [
-              AppPerfAgent::Types::MEMORY,
-              "system.memory.free_bytes",
-              "Memory (Free)",
-              memory.free_bytes
-            ],
-            [
-              AppPerfAgent::Types::MEMORY,
-              "system.memory.inactive_bytes",
-              "Memory (Inactive)",
-              memory.inactive_bytes
-            ],
-            [
-              AppPerfAgent::Types::MEMORY,
-              "system.memory.active_bytes",
-              "Memory (Active)",
-              memory.active_bytes
-            ],
-            [
-              AppPerfAgent::Types::MEMORY,
-              "system.memory.wired_bytes",
-              "Memory (Wired)",
-              memory.wired_bytes
-            ],
-            [
-              AppPerfAgent::Types::MEMORY,
-              "system.memory.total_bytes",
-              "Memory (Total)",
-              memory.total_bytes
-            ]
+            ["system.memory.free_bytes",     memory.free_bytes],
+            ["system.memory.inactive_bytes", memory.inactive_bytes],
+            ["system.memory.active_bytes",   memory.active_bytes],
+            ["system.memory.wired_bytes",    memory.wired_bytes],
+            ["system.memory.total_bytes",    memory.total_bytes]
           ]
         end
       end
