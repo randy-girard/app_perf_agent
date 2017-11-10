@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    app_perf_agent (0.0.1)
-      oj (= 3.3.2)
+    app_perf_agent (0.0.5)
+      msgpack
       vmstat (= 2.3.0)
 
 GEM
@@ -13,7 +13,7 @@ GEM
     docile (1.1.5)
     json (2.1.0)
     method_source (0.8.2)
-    oj (3.3.2)
+    msgpack (1.1.0)
     pry (0.10.4)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
