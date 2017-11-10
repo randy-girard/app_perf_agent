@@ -1,5 +1,5 @@
 require 'net/http'
-require 'oj'
+require 'msgpack'
 require 'base64'
 
 module AppPerfAgent
@@ -64,7 +64,7 @@ module AppPerfAgent
     end
 
     def compress_body(data)
-      body = Oj.dump({
+      body = MessagePack.pack({
         "host" => AppPerfAgent.hostname,
         "data" => data
       })
