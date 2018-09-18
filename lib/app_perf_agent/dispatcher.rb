@@ -7,10 +7,23 @@ module AppPerfAgent
     def initialize
       @start_time = Time.now
       @queue = Queue.new
+      @tags = []
     end
 
     def add_event(event)
       @queue << event
+    end
+
+    def add_tag(key, value)
+      tag = @tags.find {|tag| tag[1] == key && tag[2] == value }
+
+      if tag
+        tag[0]
+      else
+        index = @tags.size
+        @tags << [index, key, value]
+        index
+      end
     end
 
     def queue_empty?
@@ -27,13 +40,14 @@ module AppPerfAgent
 
     def reset
       @queue.clear
+      @tags = []
       @start_time = Time.now
     end
 
     def dispatch
       begin
-        events = drain(@queue)
-        dispatch_events(events.dup)
+        data = drain
+        dispatch_events(data.dup)
       rescue => ex
         ::AppPerfAgent.logger.error "#{ex.inspect}"
         ::AppPerfAgent.logger.error "#{ex.backtrace.inspect}"
@@ -64,21 +78,28 @@ module AppPerfAgent
     end
 
     def compress_body(data)
-      body = MessagePack.pack({
-        "host" => AppPerfAgent.hostname,
-        "data" => data
-      })
+      hash = {
+        "metrics" => data["metrics"],
+        "tags" => data["tags"]
+      }
+
+      AppPerfAgent.logger.info "Dispatching Data: #{hash}"
+
+      body = MessagePack.pack(hash)
 
       compressed_body = Zlib::Deflate.deflate(body, Zlib::DEFAULT_COMPRESSION)
       Base64.encode64(compressed_body)
     end
 
-    def drain(queue)
-      Array.new(queue.size) { queue.pop }
+    def drain
+      {
+        "metrics" => Array.new(@queue.size) { @queue.pop },
+        "tags" => @tags
+      }
     end
 
     def url
-      @url ||= "http://#{AppPerfAgent.options[:host]}/api/listener/2/#{AppPerfAgent.options[:license_key]}"
+      @url ||= "http://#{AppPerfAgent.options[:host]}/api/listener/#{AppPerfAgent.options[:license_key]}"
     end
   end
 end

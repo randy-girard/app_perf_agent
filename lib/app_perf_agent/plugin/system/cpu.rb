@@ -17,10 +17,10 @@ module AppPerfAgent
           metrics = cpus.each_with_index.flat_map {|cpu, index|
             total = (cpu.idle + cpu.nice + cpu.system + cpu.user) - (last[index].idle + last[index].nice + last[index].system + last[index].user)
             [
-              ["system.cpu.idle",   (cpu.idle - last[index].idle).to_f / total.to_f * 100.to_f,   { "num" => cpu.num }],
-              ["system.cpu.nice",   (cpu.nice - last[index].nice).to_f / total.to_f * 100.to_f,   { "num" => cpu.num }],
-              ["system.cpu.system", (cpu.system - last[index].system).to_f / total.to_f * 100.to_f, { "num" => cpu.num }],
-              ["system.cpu.user",   (cpu.user - last[index].user).to_f / total.to_f * 100.to_f,   { "num" => cpu.num }]
+              ["system.cpu.stats",   (cpu.idle - last[index].idle).to_f / total.to_f * 100.to_f,   { "metric" => "idle", "num" => cpu.num, "host" => AppPerfAgent.hostname }],
+              ["system.cpu.stats",   (cpu.nice - last[index].nice).to_f / total.to_f * 100.to_f,   { "metric" => "nice", "num" => cpu.num, "host" => AppPerfAgent.hostname }],
+              ["system.cpu.stats", (cpu.system - last[index].system).to_f / total.to_f * 100.to_f, { "metric" => "system", "num" => cpu.num, "host" => AppPerfAgent.hostname }],
+              ["system.cpu.stats",   (cpu.user - last[index].user).to_f / total.to_f * 100.to_f,   { "metric" => "user", "num" => cpu.num, "host" => AppPerfAgent.hostname }]
             ]
           }
           self.last = cpus

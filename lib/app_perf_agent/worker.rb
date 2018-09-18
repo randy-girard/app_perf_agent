@@ -37,7 +37,8 @@ module AppPerfAgent
         items.map {|i| AppPerfAgent.logger.debug i }
         Array(items).each do |item|
           key, value, tags = item
-          metric = ["metric", Time.now.to_f, key, value, tags || {}]
+          indexed_tags = tags.map {|(key, value)| dispatcher.add_tag(key, value) }
+          metric = [Time.now.to_f, key, indexed_tags || [], 1, value, []]
           dispatcher.add_event(metric)
         end
       end

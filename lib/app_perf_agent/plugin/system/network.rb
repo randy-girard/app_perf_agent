@@ -9,8 +9,8 @@ module AppPerfAgent
           inets = Vmstat.ethernet_devices
           inets.flat_map {|inet|
             [
-              ["system.network.in_bytes", inet.in_bytes, { "name" => inet.name.to_s }],
-              ["system.network.out_bytes", inet.out_bytes, { "name" => inet.name.to_s }]
+              ["system.network.stats", inet.in_bytes, { "metric" => "in_bytes", "name" => inet.name.to_s, "host" => AppPerfAgent.hostname }],
+              ["system.network.stats", inet.out_bytes, { "metric" => "out_bytes", "name" => inet.name.to_s, "host" => AppPerfAgent.hostname }]
             ]
           }
         end
