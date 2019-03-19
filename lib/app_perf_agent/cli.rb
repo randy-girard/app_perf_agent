@@ -70,7 +70,7 @@ module AppPerfAgent
         o.banner = "app_perf_agent [options]"
 
         o.on '-f', '--foreground', "Daemonize process" do |arg|
-          opts[:daemon] = true
+          opts[:daemon] = false
         end
 
         o.on '-l', '--license-key LICENSE_KEY', "License Key" do |arg|
