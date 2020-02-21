@@ -78,7 +78,7 @@ module AppPerfAgent
     end
 
     def url
-      @url ||= "http://#{AppPerfAgent.options[:host]}/api/listener/2/#{AppPerfAgent.options[:license_key]}"
+      @url ||= "http://#{AppPerfAgent.options[:host]}/api/listener/3/#{AppPerfAgent.options[:license_key]}"
     end
   end
 end
