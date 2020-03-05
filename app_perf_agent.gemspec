@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.homepage      = "https://www.github.com/randy-girard/app_perf_agent"
   s.license       = "MIT"
 
-  s.add_development_dependency "rake", "12.0.0"
+  s.add_development_dependency "rake", "12.3.3"
   s.add_development_dependency "rspec", "3.6.0"
   s.add_development_dependency "pry", "0.10.4"
   s.add_development_dependency "simplecov", "0.14.1"
