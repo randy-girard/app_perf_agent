@@ -64,13 +64,13 @@ module AppPerfAgent
     end
 
     def parse_options(argv)
-      opts = {}
+      opts = { daemon: false }
 
       parser = OptionParser.new do |o|
         o.banner = "app_perf_agent [options]"
 
-        o.on '-f', '--foreground', "Daemonize process" do |arg|
-          opts[:daemon] = false
+        o.on '-b', '--background', "Daemonize process" do |arg|
+          opts[:daemon] = true
         end
 
         o.on '-l', '--license-key LICENSE_KEY', "License Key" do |arg|
